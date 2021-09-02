@@ -1,11 +1,14 @@
 import 'dart:io';
 
+// user
+var user;
+
 // akun
 var accounts = [
   {
   'id': '1',
   'name': 'hasyim',
-  'pin': 'user0',
+  'pin': '123456',
   'balance': 100000
   },
   {
@@ -38,6 +41,8 @@ void clear() {
   print('\x1B[2J\x1B[0;0H');
 }
 
+
+
 void menu() {
   clear();
   print('[1] Lihat Saldo');
@@ -52,5 +57,24 @@ void menu() {
 
 void main() {
   clear();
-  menu();
+  print('Masukkan Nama');
+  final name = stdin.readLineSync();
+  print('Masukkan Pin');
+  final pin = stdin.readLineSync();
+
+  for(var i = 0; i < accounts.length; i++) {
+    if(accounts[i]['name'] == name) {
+      if(accounts[i]['pin'] == pin) {
+        user = name;
+        menu();
+      }
+      else {
+      print('Pin Salah!');
+    }
+    }
+    else {
+      print('Nama Salah!');
+    }
+  }
+
 }
