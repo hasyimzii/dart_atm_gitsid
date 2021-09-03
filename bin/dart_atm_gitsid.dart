@@ -1,6 +1,7 @@
 import 'dart:io';
 
 // user
+var userRow;
 var userId;
 
 // akun
@@ -42,22 +43,67 @@ void clear() {
   print('\x1B[2J\x1B[0;0H');
 }
 
-void balance() {
-  clear();
-  for(var i = 0; i < accounts.length; i++) {
-    if(accounts[i]['id'] == userId) {
-      var id = accounts[i]['id'];
-      var name = accounts[i]['name'];
-      var balance = accounts[i]['balance'];
-
-      print('Id Rekening : $id');
-      print('Nama Akun   : $name');
-      print('Sisa Saldo  : $balance');
-    }
-  }
-
+// enter to back
+void back() {
   print('Tekan Enter untuk Kembali');
   final enter = stdin.readLineSync();
+}
+
+void balance() {
+  clear();
+  var id = accounts[userRow]['id'];
+  var name = accounts[userRow]['name'];
+  var balance = accounts[userRow]['balance'];
+
+  print('Id Rekening : $id');
+  print('Nama Akun   : $name');
+  print('Sisa Saldo  : $balance');
+
+  back();
+  menu();
+}
+
+void transfer() {
+  clear();
+  print('Masukkan Id Rekening yang Ingin Ditransfer');
+  final id = stdin.readLineSync();
+
+
+}
+
+void withdraw() {
+  clear();
+  print('Masukkan Nominal yang Ingin Ditarik');
+  int? input = int.parse(stdin.readLineSync()!);
+  int tempBalance = int.parse(accounts[userRow]['balance'].toString());
+
+  if(tempBalance >= input) {
+    int result = tempBalance - input;
+    accounts[userRow]['balance'] = result;
+    var balance = accounts[userRow]['balance'];
+    print('Penarikan Berhasil, Saldomu Sisa $balance');
+  }
+  else {
+    print('Saldomu Tidak Cukup!');
+  }
+
+  back();
+  menu();
+}
+
+void deposit() {
+  clear();
+  print('Masukkan Nominal yang Ingin Disetor');
+  int? input = int.parse(stdin.readLineSync()!);
+  
+  int tempBalance = int.parse(accounts[userRow]['balance'].toString());
+  int result = tempBalance + input;
+  accounts[userRow]['balance'] = result;
+  var balance = accounts[userRow]['balance'];
+  
+  print('Setoran Berhasil, Saldomu Sisa $balance');
+
+  back();
   menu();
 }
 
@@ -83,7 +129,7 @@ void menu() {
     withdraw();
   }
   else if(menu == '4') {
-    print('');
+    deposit();
   }
   else if(menu == '0') {
     main();
@@ -103,6 +149,7 @@ bool login() {
   for(var i = 0; i < accounts.length; i++) {
     if(accounts[i]['name'] == name) {
       if(accounts[i]['pin'] == pin) {
+        userRow = i;
         userId = accounts[i]['id'];
         return true;
       }
