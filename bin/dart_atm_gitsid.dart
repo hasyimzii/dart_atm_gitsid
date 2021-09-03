@@ -68,7 +68,39 @@ void transfer() {
   print('Masukkan Id Rekening yang Ingin Ditransfer');
   final id = stdin.readLineSync();
 
+  for(var i = 0; i < accounts.length; i++) {
+    if(accounts[i]['id'] == id) {
+      print('Masukkan Nominal yang Ingin Ditransfer');
+      int? input = int.parse(stdin.readLineSync()!);
+      int tempBalance = int.parse(accounts[userRow]['balance'].toString());
+      int tempTarget = int.parse(accounts[i]['balance'].toString());
 
+      if(tempBalance >= input) {
+        // decrease this balance
+        int result = tempBalance - input;
+        accounts[userRow]['balance'] = result;
+
+        // increase target balance
+        int targetResult = tempTarget + input;
+        accounts[i]['balance'] = targetResult;
+
+        var balance = accounts[userRow]['balance'];
+        var targetBalance = accounts[i]['balance'];
+        print('Transfer Berhasil, Saldomu Sisa $balance, Saldo Tujuan Sisa $targetBalance');
+
+        back();
+        menu();
+      }
+      else {
+        print('Saldomu Tidak Cukup!');
+        back();
+        menu();
+      }
+    }
+  }
+  print('Rekening Tidak Ditemukan!');
+  back();
+  menu();
 }
 
 void withdraw() {
@@ -123,7 +155,7 @@ void menu() {
     balance();
   }
   else if(menu == '2') {
-    print('');
+    transfer();
   }
   else if(menu == '3') {
     withdraw();
