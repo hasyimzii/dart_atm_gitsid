@@ -2,10 +2,12 @@ import 'dart:io';
 
 class Transfer {
   final List<Map> accounts;
+  final List<String> history;
   final auth;
 
   const Transfer ({
     required this.accounts,
+    required this.history,
     required this.auth,
   });
 
@@ -17,6 +19,7 @@ class Transfer {
       if(accounts[i]['id'] == id) {
         String name = accounts[i]['name'];
         print('Kamu Akan Transfer ke Rekening $name');
+        
         stdout.write('Masukkan Nominal yang Ingin Ditransfer : ');
         int? input = int.parse(stdin.readLineSync()!);
         int? tempBalance = int.parse(accounts[auth.userRow]['balance'].toString());
@@ -31,8 +34,12 @@ class Transfer {
           int? targetResult = tempTarget + input;
           accounts[i]['balance'] = targetResult;
 
+          // balance result
           int balance = accounts[auth.userRow]['balance'];
           int targetBalance = accounts[i]['balance'];
+
+          // add history
+          history.add('Transfer Senilai $input ke Rekening $name');
           return print('Transfer Berhasil, Saldomu Sisa $balance, Saldo milik $name Sisa $targetBalance');
         }
         else {
