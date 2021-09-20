@@ -12,10 +12,6 @@ import 'bin/history.dart';
 Account accountClass = Account();
 List<Map> accounts = accountClass.accounts;
 
-// history
-History historyClass = History();
-List<String> history = historyClass.history;
-
 // system
 System system = System();
 
@@ -26,13 +22,16 @@ Auth auth = Auth(accounts: accounts);
 Balance balance = Balance(accounts: accounts, auth: auth);
 
 // transfer
-Transfer transfer = Transfer(accounts: accounts, auth: auth, history: history);
+Transfer transfer = Transfer(accounts: accounts, auth: auth);
 
 // withdraw
-Withdraw withdraw = Withdraw(accounts: accounts, auth: auth, history: history);
+Withdraw withdraw = Withdraw(accounts: accounts, auth: auth);
 
 // deposit
-Deposit deposit = Deposit(accounts: accounts, auth: auth, history: history);
+Deposit deposit = Deposit(accounts: accounts, auth: auth);
+
+// history
+History historyClass = History(accounts: accounts, auth: auth);
 
 
 // menu

@@ -2,12 +2,10 @@ import 'dart:io';
 
 class Withdraw {
   final List<Map> accounts;
-  final List<String> history;
   final auth;
 
   const Withdraw ({
     required this.accounts,
-    required this.history,
     required this.auth,
   });
 
@@ -22,6 +20,7 @@ class Withdraw {
       int balance = accounts[auth.userRow]['balance'];
 
       // add history
+      List<String> history = accounts[auth.userRow]['history'];
       history.add('Tarik Tunai Senilai $input');
       return print('Penarikan Berhasil, Saldomu Sisa $balance');
     }
