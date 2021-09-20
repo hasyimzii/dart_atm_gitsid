@@ -1,30 +1,23 @@
 import 'dart:io';
 
 class Withdraw {
-  final List<Map> accounts;
-  final auth;
+  final user;
 
-  const Withdraw ({
-    required this.accounts,
-    required this.auth,
-  });
+  const Withdraw({required this.user});
 
   void withdraw() {
     stdout.write('Masukkan Nominal yang Ingin Ditarik : ');
     int? input = int.parse(stdin.readLineSync()!);
-    int? tempBalance = int.parse(accounts[auth.userRow]['balance'].toString());
+    int tempBalance = user.getBalance();
 
-    if(tempBalance >= input) {
+    if (tempBalance >= input) {
       int? result = tempBalance - input;
-      accounts[auth.userRow]['balance'] = result;
-      int balance = accounts[auth.userRow]['balance'];
+      user.setBalance(result);
 
       // add history
-      List<String> history = accounts[auth.userRow]['history'];
-      history.add('Tarik Tunai Senilai $input');
-      return print('Penarikan Berhasil, Saldomu Sisa $balance');
-    }
-    else {
+      user.addHistory('Tarik Tunai Senilai $input');
+      return print('Penarikan Berhasil, Saldomu Sisa ${user.getBalance()}');
+    } else {
       return print('Saldomu Tidak Cukup!');
     }
   }

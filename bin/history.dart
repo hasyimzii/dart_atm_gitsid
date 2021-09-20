@@ -1,20 +1,15 @@
 class History {
-  final List<Map> accounts;
-  final auth;
+  final user;
 
-  const History ({
-    required this.accounts,
-    required this.auth,
-  });
+  const History({required this.user});
 
   void getHistory() {
-    List<String> history = accounts[auth.userRow]['history'];
-    if(history.isEmpty) {
+    List<String> history = user.getHistory();
+    if (history.isEmpty) {
       print('Belum Ada Riwayat Transaksi!');
-    }
-    else {
+    } else {
       print('Riwayat Transaksi');
-      for(String? item in history) {
+      for (String? item in history) {
         print('- $item');
       }
     }

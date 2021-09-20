@@ -1,45 +1,41 @@
 import 'dart:io';
+import 'user.dart';
 
 class Transfer {
-  final List<Map> accounts;
-  final auth;
+  final List<User> accounts;
+  final User user;
 
   const Transfer ({
     required this.accounts,
-    required this.auth,
+    required this.user,
   });
 
   void transfer() {
     stdout.write('Masukkan Id Rekening yang Ingin Ditransfer : ');
     final id = stdin.readLineSync();
 
-    for(var i = 0; i < accounts.length; i++) {
-      if(accounts[i]['id'] == id) {
-        String name = accounts[i]['name'];
-        print('Kamu Akan Transfer ke Rekening $name');
+    for(User? target in accounts) {
+      if(target!.getId() == id) {
+        print('Kamu Akan Transfer ke Rekening ${target.getName()}');
         
         stdout.write('Masukkan Nominal yang Ingin Ditransfer : ');
         int? input = int.parse(stdin.readLineSync()!);
-        int? tempBalance = int.parse(accounts[auth.userRow]['balance'].toString());
-        int? tempTarget = int.parse(accounts[i]['balance'].toString());
+        int? tempBalance = user.getBalance();
+        int? tempTarget = target.getBalance();
 
         if(tempBalance >= input) {
-          // decrease this balance
+          // decrease user balance
           int? result = tempBalance - input;
-          accounts[auth.userRow]['balance'] = result;
+          user.setBalance(result);
 
           // increase target balance
           int? targetResult = tempTarget + input;
-          accounts[i]['balance'] = targetResult;
-
-          // balance result
-          int balance = accounts[auth.userRow]['balance'];
-          int targetBalance = accounts[i]['balance'];
+          target.setBalance(targetResult);
 
           // add history
-          List<String> history = accounts[auth.userRow]['history'];
-          history.add('Transfer Senilai $input ke Rekening $name');
-          return print('Transfer Berhasil, Saldomu Sisa $balance, Saldo milik $name Sisa $targetBalance');
+          user.addHistory('Transfer Senilai $input ke Rekening ${target.getName()}');
+          target.addHistory('Menerima Transfer Senilai $input dari ${user.getName()}');
+          return print('Transfer Berhasil! Saldomu Sisa ${user.getBalance()}, Saldo milik ${target.getName()} Sisa ${target.getBalance()}');
         }
         else {
           return print('Saldomu Tidak Cukup!');

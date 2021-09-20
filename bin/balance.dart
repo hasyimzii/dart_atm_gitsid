@@ -1,16 +1,12 @@
 class Balance {
-  final List<Map> accounts;
-  final auth;
+  final user;
 
-  const Balance ({
-    required this.accounts,
-    required this.auth,
-  });
+  const Balance({required this.user});
 
   void balance() {
-    String id = accounts[auth.userRow]['id'];
-    String name = accounts[auth.userRow]['name'];
-    int balance = accounts[auth.userRow]['balance'];
+    String id = user.getId();
+    String name = user.getName();
+    int balance = user.getBalance();
 
     print('Id Rekening : $id');
     print('Nama Akun   : $name');

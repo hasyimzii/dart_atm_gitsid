@@ -1,44 +1,44 @@
 import 'dart:io';
-import 'bin/account.dart';
+import 'bin/user.dart';
 import 'bin/system.dart';
-import 'bin/auth.dart';
 import 'bin/balance.dart';
 import 'bin/transfer.dart';
 import 'bin/withdraw.dart';
 import 'bin/deposit.dart';
 import 'bin/history.dart';
 
-// account
-Account accountClass = Account();
-List<Map> accounts = accountClass.accounts;
-
 // system
 System system = System();
 
-// auth
-Auth auth = Auth(accounts: accounts);
+// account
+List<User> accounts = [
+  User(id: '1-0123', name: 'hasyim', pin: '123456', balance: 100000, history: []),
+  User(id: '2-0123', name: 'andi', pin: '123456', balance: 320000, history: []),
+  User(id: '3-0123', name: 'aulia', pin: '123456', balance: 125000, history: []),
+  User(id: '4-0123', name: 'rudi', pin: '123456', balance: 80000, history: []),
+  User(id: '5-0123', name: 'putri', pin: '123456', balance: 210000, history: []),
+];
+
+// init user
+var user;
 
 // balance
-Balance balance = Balance(accounts: accounts, auth: auth);
+Balance balance = Balance(user: user);
 
 // transfer
-Transfer transfer = Transfer(accounts: accounts, auth: auth);
+Transfer transfer = Transfer(accounts: accounts, user: user);
 
 // withdraw
-Withdraw withdraw = Withdraw(accounts: accounts, auth: auth);
+Withdraw withdraw = Withdraw(user: user);
 
 // deposit
-Deposit deposit = Deposit(accounts: accounts, auth: auth);
-
-// history
-History historyClass = History(accounts: accounts, auth: auth);
+Deposit deposit = Deposit(user: user);
 
 
 // menu
 void menu() {
   system.clear();
-  String name = accounts[auth.userRow]['name'];
-  print('Selamat Datang $name!');
+  print('Selamat Datang ${user.getName()}!');
   print('[1] Lihat Saldo');
   print('[2] Transfer Saldo');
   print('[3] Tarik Tunai');
@@ -64,7 +64,7 @@ void menu() {
       deposit.deposit();
       break;
     case '5' :
-      historyClass.getHistory();
+      user.getHistory();
       break;
     case '0' :
       main();
@@ -78,10 +78,28 @@ void menu() {
   menu(); // recusrive
 }
 
+bool login() {
+  stdout.write('Masukkan Nama : ');
+  final name = stdin.readLineSync();
+  stdout.write('Masukkan Pin : ');
+  final pin = stdin.readLineSync();
+
+  // looping accounts
+  for(User? usr in accounts) {
+    if(usr!.getName() == name) {
+      if(usr.getPin() == pin) {
+        user = usr;
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 // main
 void main() {
   system.clear();
-  var success = auth.login();
+  var success = login();
 
   if(success) {
     menu();
