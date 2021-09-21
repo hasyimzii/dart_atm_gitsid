@@ -5,7 +5,6 @@ import 'bin/balance.dart';
 import 'bin/transfer.dart';
 import 'bin/withdraw.dart';
 import 'bin/deposit.dart';
-import 'bin/history.dart';
 
 // system
 System system = System();
